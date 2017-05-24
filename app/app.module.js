@@ -25,7 +25,7 @@
   runFunction.$inject = ['$rootScope', '$location','userService','HOST'];
 
   function runFunction($rootScope, $location,userService,HOST) {
-
+	//window.localStorage.removeItem("userId");
     var UserId = userService.getUserId();
     console.log(UserId);
     if(!UserId){

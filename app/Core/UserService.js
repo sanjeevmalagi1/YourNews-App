@@ -18,7 +18,7 @@
 
     ////////////
     function getUserId(){
-        return UserId;
+        return window.localStorage.getItem("userId");
     }
 
     function RegisterUser(){
@@ -32,7 +32,9 @@
                 }
               ),
       }).success( function(response) {
-        return response;
+        
+		window.localStorage.setItem("userId",response.data);
+		return response;
       });
 
     }

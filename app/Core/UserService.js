@@ -2,43 +2,50 @@
   'use strict';
 
   angular
-    .module('app.core')
+    .module('app.Core')
     .factory('userService', userService);
 
-  userService.$inject = ['$state'];
+  userService.$inject = ['$state','$http','HOST'];
 
-  function userService($state) {
-
+  function userService($state,$http,HOST) {
+    var UserId = window.localStorage.getItem("userId");
     var service = {
-      LogInUser : LogInUser,
+      getUserId : getUserId,
       RegisterUser: RegisterUser
     };
 
     return service;
 
     ////////////
+    function getUserId(){
+        return UserId;
+    }
 
-    function LogInUser(email,password){
-      $http({
+    function RegisterUser(){
+      return $http({
         method: 'POST',
-        url: 'http://localhost/SuperArdorAnalytics/index.php/User/LogIn/',
-        data: {
-          'Email': email,
-          'Password': password
+        url: HOST+'index.php/User/AddUser',
+        dataType: 'json',
+        data: serialize(
+                {
+                  'null' : null
+                }
+              ),
+      }).success( function(response) {
+        return response;
+      });
+
+    }
+
+    function serialize(obj){
+      var str = "";
+      for (var key in obj) {
+          if (str != "") {
+              str += "&";
           }
-        }).then(function successCallback(response) {
-            window.localStorage.setItem("user",response);
-          }, function errorCallback(response) {
-            console.log(response);
-        });
-    }
-
-    function getMessInfo(uid){
-       return $firebaseObject(firebaseDataService.mess.child(uid));
-    }
-
-    function getMessDetails(){
-        return $firebaseArray(firebaseDataService.mess);
+          str += key + "=" + encodeURIComponent(obj[key]);
+      }
+      return str;
     }
 
   }

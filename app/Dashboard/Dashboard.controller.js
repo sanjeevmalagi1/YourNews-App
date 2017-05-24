@@ -9,11 +9,7 @@
 
   function DashboardController($scope,$state,$location,$anchorScroll,newsTypeService,newsService,HOST) {
     $scope.stories = [];
-    newsService.getNews(0,"latest").then(function(response){
-      $scope.stories = response.data;
-      console.log(response.data);
-    });
-
+    
     $scope.stories = [];
     $scope.page = 0;
     $scope.$watch(function () { return newsTypeService.getCurrentType(); }, function (newValue, oldValue) {

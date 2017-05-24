@@ -18,28 +18,25 @@
       //'app.WebSite',
       //'app.LogsInfo'
       ])
-    .config(configFunction)
     .constant('HOST','http://yournews.16mb.com/')
     .run(runFunction);
 
 
-  configFunction.$inject = ['$routeProvider'];
+  runFunction.$inject = ['$rootScope', '$location','userService','HOST'];
 
-  function configFunction($routeProvider) {
-    //http://yournews.16mb.com/
-    //http://localhost/yourNews/
-    $routeProvider.otherwise({
-      redirectTo: '/'
-    });
-  }
+  function runFunction($rootScope, $location,userService,HOST) {
 
-  runFunction.$inject = ['$rootScope', '$location','HOST'];
-
-  function runFunction($rootScope, $location,HOST) {
-    var UserId = window.localStorage.getItem("userId");
+    var UserId = userService.getUserId();
     console.log(UserId);
     if(!UserId){
-      $.post(
+      userService.RegisterUser()
+        .then(function(response){
+          if(response.data){
+            console.log(response);
+            window.localStorage.setItem("userId",response.data)
+          }
+        });
+      /*$.post(
         HOST+'index.php/User/AddUser',
         {
           'null' : null
@@ -51,7 +48,7 @@
             window.localStorage.setItem("userId",result)
           }
         }
-      );
+      );*/
     }
 
   }

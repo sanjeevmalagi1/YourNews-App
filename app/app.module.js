@@ -26,6 +26,8 @@
   configFunction.$inject = ['$routeProvider'];
 
   function configFunction($routeProvider) {
+    //http://yournews.16mb.com/
+    //http://localhost/yourNews/
     $routeProvider.otherwise({
       redirectTo: '/'
     });

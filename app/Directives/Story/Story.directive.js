@@ -15,16 +15,21 @@
       };
   }
 
-  StoryController.$inject = ['$scope', '$state','HOST'];
+  StoryController.$inject = ['$scope', '$state','ratingsService','HOST'];
 
-  function StoryController($scope, $state,HOST) {
+  function StoryController($scope, $state,ratingsService,HOST) {
 
     $scope.upvote = function(){
 
       $scope.downvoted = false;
       $scope.upvoted =  true;
 
-      $.post(
+      ratingsService.upVote($scope.story.id,window.localStorage.getItem("userId"))
+        .then(function(response){
+          InterpretResult(response.data);
+        });
+
+      /*$.post(
         HOST+'index.php/Ratings/addPoint',
         {
           'newsId' : $scope.story.id,
@@ -35,7 +40,7 @@
             InterpretResult(data);
           }
         }
-      );
+      );*/
 
     }
 
@@ -43,8 +48,13 @@
       $scope.downvoted = true;
       $scope.upvoted =  false;
 
+      ratingsService.downVote($scope.story.id,window.localStorage.getItem("userId"))
+        .then(function(response){
+          InterpretResult(response.data);
+        });
 
-      $.post(
+
+      /*$.post(
         HOST+'index.php/Ratings/removePoint',
         {
           'newsId' : $scope.story.id,
@@ -55,14 +65,19 @@
             InterpretResult(data);
           }
         }
-      );
+      );*/
     }
 
     $scope.markgood = function(){
       $scope.markedgood = true;
       $scope.markedbad = false;
 
-      $.post(
+      ratingsService.markGood($scope.story.id,window.localStorage.getItem("userId"))
+        .then(function(response){
+          InterpretResult1(response.data);
+        });
+
+      /*$.post(
         HOST+'index.php/Ratings/addGood',
         {
           'newsId' : $scope.story.id,
@@ -74,14 +89,19 @@
             InterpretResult1(data);
           }
         }
-      );
+      );*/
     }
 
     $scope.markbad = function(){
       $scope.markedbad = true;
       $scope.markedgood = false;
 
-      $.post(
+      ratingsService.markBad($scope.story.id,window.localStorage.getItem("userId"))
+        .then(function(response){
+          InterpretResult1(response.data);
+        });
+
+      /*$.post(
         HOST+'index.php/Ratings/addBad',
         {
           'newsId' : $scope.story.id,
@@ -92,11 +112,11 @@
             InterpretResult1(data);
           }
         }
-      );
+      );*/
     }
 
     function InterpretResult(data) {
-      var result = JSON.parse(data);
+      var result = data;
 
       if(result.action == "added"){
         $scope.story.points = parseInt($scope.story.points) + parseInt(result.points);
@@ -105,11 +125,11 @@
       if(result.action == "removed"){
         $scope.story.points = parseInt($scope.story.points) - parseInt(result.points);
       }
-      $scope.$digest();
+      //$scope.$digest();
     }
 
     function InterpretResult1(data) {
-      var result = JSON.parse(data);
+      var result = data;
 
       if(result.type == "good" && result.action == "added"){
           if(result.previous){
@@ -132,7 +152,7 @@
       if(result.type == "good" && result.action == "removed"){
         $scope.story.good = parseInt($scope.story.good) - parseInt(1);
       }
-      $scope.$digest();
+      //$scope.$digest();
     }
   }
 

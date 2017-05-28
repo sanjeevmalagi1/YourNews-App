@@ -10,6 +10,7 @@
   function SectionsController($scope,$state,$stateParams,$location,$anchorScroll,newsTypeService,newsService,HOST) {
     $scope.page = 0;
     $scope.stories = [];
+    console.log($stateParams.section);
     $scope.$watch(function () { return newsTypeService.getCurrentType(); }, function (newValue, oldValue) {
        if (newValue != null) {
          $scope.type = newValue;

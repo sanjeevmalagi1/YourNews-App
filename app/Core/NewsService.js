@@ -39,7 +39,7 @@
     function getSectionNews(page,section,type){
       return $http({
         method: 'POST',
-        url: HOST+'index.php/News/GetAllNews',
+        url: HOST+'index.php/News/GetSectionNews',
         dataType: 'json',
         data: serialize(
                 {

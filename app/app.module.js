@@ -33,7 +33,7 @@
         .then(function(response){
           if(response.data){
             console.log(response);
-            window.localStorage.setItem("userId",response.data)
+            //window.localStorage.setItem("userId",response.data)
           }
         });
       /*$.post(
